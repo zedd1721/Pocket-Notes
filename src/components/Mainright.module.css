@@ -1,0 +1,52 @@
+.container {
+  width: 70%;
+  height: 100%;
+  background-color: #dae5f5;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+
+  position: relative;
+}
+.container img {
+  width: 40vw;
+}
+.container h1 {
+  font-weight: 700;
+  font-size: 3vw;
+}
+.container p {
+  color: #292929;
+  font-weight: 500;
+  font-size: 1vw;
+}
+
+.container .encry {
+  color: #292929;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  position: absolute;
+  bottom: 20px;
+}
+@media (max-width: 800px) {
+  .container img {
+    width: 50vw;
+  }
+  .container h1 {
+    font-size: 5vw;
+  }
+  .container p {
+    font-size: 1.5vw;
+  }
+}
+@media (max-width: 450px) {
+  .container {
+    display: none;
+  }
+}
