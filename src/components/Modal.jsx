@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import "./Modal.css";
-function Modal({ modalClose }) {
+
+function Modal({ modalClose, addData }) {
   const containerout = useRef();
 
   const close = (e) => {
@@ -23,18 +24,47 @@ function Modal({ modalClose }) {
     name: "",
     selectedColor: "",
   });
-  //   const [errors, setErrors] = useState({
-  //     name:null,
-  //     selectedColor: null,
-  //   });
+  const [errors, setErrors] = useState({
+    name: null,
+    selectedColor: null,
+  });
 
-  const handleName =  (event) => {
+  const handleName = (event) => {
     console.log(event.target.value);
     setGroupname({ ...groupname, name: event.target.value });
   };
   const handleColor = (color) => {
     console.log(color);
     setGroupname({ ...groupname, selectedColor: color });
+  };
+
+  const handleCreate = () => {
+    let isError = false;
+    // checking empty fields
+    if (groupname.name.trim().length <= 0) {
+      setErrors((prev) => ({ ...prev, name: "This cant be empty" }));
+      isError = true;
+    } else {
+      setErrors((prev) => ({ ...prev, name: null }));
+    }
+    console.log(errors.name);
+    if (groupname.selectedColor.length <= 0) {
+      setErrors((prev) => ({
+        ...prev,
+        selectedColor: "Please select a color",
+      }));
+      isError = true;
+    } else {
+      setErrors((prev) => ({ ...prev, selectedColor: null }));
+    }
+    console.log(errors.selectedColor);
+    console.log("Group Name:", groupname);
+
+    if (!isError) {
+      
+      addData(groupname);
+      modalClose();
+    }
   };
 
   return (
@@ -47,10 +77,16 @@ function Modal({ modalClose }) {
             type="text"
             placeholder="Enter group name"
             value={groupname.name}
-            name="name"
             onChange={handleName}
           />
         </div>
+        {errors.name ? (
+          <p className="errormsg" style={{ color: "red" }}>
+            {errors.name}
+          </p>
+        ) : (
+          ""
+        )}
         <div className="colorchoose">
           <h2>Choose colour</h2>
           <div className="colors">
@@ -66,7 +102,14 @@ function Modal({ modalClose }) {
             })}
           </div>
         </div>
-        <button>Create</button>
+        {errors.selectedColor ? (
+          <p className="errormsg" style={{ color: "red" }}>
+            {errors.selectedColor}
+          </p>
+        ) : (
+          ""
+        )}
+        <button onClick={handleCreate}>Create</button>
       </div>
     </div>
   );

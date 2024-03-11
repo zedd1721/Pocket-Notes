@@ -11,9 +11,9 @@ function App() {
   };
   return (
     <main>
-      <Mainleft clickAdd={handlemodal} />
+      <Mainleft clickAdd={handlemodal} showModal={showModal} setShowModal={setShowModal}/>
       <Mainright />
-      {showModal && <Modal modalClose={() => setShowModal(false)} />}
+      {/* {showModal && <Modal modalClose={() => setShowModal(false)} />} */}
     </main>
   );
 }
