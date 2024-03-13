@@ -2,32 +2,21 @@ import React, { useState, useEffect } from "react";
 import { IoMdAddCircle } from "react-icons/io";
 import styled from "./Mainleft.module.css";
 import Modal from "./Modal";
+import Box from "./Box";
 
-function Mainleft({ clickAdd, showModal, setShowModal }) {
-  const [groupStore, setGroupStore] = useState(
-    JSON.parse(localStorage.getItem("groupStore")) || []
-  );
+function Mainleft({
+  clickAdd,
+  showModal,
+  setShowModal,
+  groupStore,
+  addData,
 
-  const addData = (groupname) => {
-    console.log("Adding data", groupname);
-    setGroupStore((prev) => {
-      const localGroup = [...prev, groupname];
-      localStorage.setItem("groupStore", JSON.stringify(localGroup));
-      return localGroup;
-    });
-  };
-
-  const generateImg = (name) => {
-    const word = name.split(" ");
-    //If it is a single word
-    let firstletter = word[0].charAt(0).toUpperCase();
-    //if it is more then 1 word
-    if (word.length > 1) {
-      firstletter += word[1].charAt(0).toUpperCase();
-    }
-    return firstletter;
-  };
-
+  setNotesList,
+  setSelectedGroup,
+  showBox,
+  setShowBox,
+  handleAddNoteId,
+}) {
   return (
     <>
       <div className={styled.container}>
@@ -39,12 +28,18 @@ function Mainleft({ clickAdd, showModal, setShowModal }) {
         <div className={styled.groups}>
           {groupStore.map((group, index) => {
             return (
-              <div className={styled.demogroup} key={index}>
+              <div
+                className={styled.demogroup}
+                key={index}
+                onClick={() => {
+                  setSelectedGroup(group.id), setShowBox(true);
+                }}
+              >
                 <div
                   className={styled.profileimg}
                   style={{ backgroundColor: group.selectedColor }}
                 >
-                  <h1>{generateImg(group.name)}</h1>
+                  <h1>{group.profile}</h1>
                 </div>
                 <div className={styled.noteName}>
                   <h1>{group.name}</h1>
