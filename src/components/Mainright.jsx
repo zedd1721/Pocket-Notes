@@ -3,15 +3,13 @@ import styled from "./Mainright.module.css";
 import Box from "./Box";
 import { IoMdLock } from "react-icons/io";
 
-function Mainright({ groupStore,setGroupStore, showBox, setNotesList, notesList, selectedGroup }) {
-  // const groupId = groupStore.map((group)=>group.id);
-  // const notesId = notesList.map((notes)=>notes.notesId);
-  // const selected = notesList.some((notes) => selectedGroup === notes.notesId);
+function Mainright({ groupStore,setGroupStore, showBox, selectedGroup }) {
+
 
   return (
     <div className={styled.container}>
       {showBox  ? (
-        <Box groupStore={groupStore} setGroupStore={setGroupStore} setNotesList={setNotesList} notesList={notesList} selectedGroup={selectedGroup} />
+        <Box groupStore={groupStore} setGroupStore={setGroupStore} selectedGroup={selectedGroup} />
       ) : (
         <div className={styled.wrapper} style={{ backgroundColor: "#dae5f5" }}>
           <img src="./bgimg.png" alt="" />

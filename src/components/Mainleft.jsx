@@ -10,12 +10,8 @@ function Mainleft({
   setShowModal,
   groupStore,
   addData,
-
-  setNotesList,
   setSelectedGroup,
-  showBox,
   setShowBox,
-  handleAddNoteId,
 }) {
   return (
     <>

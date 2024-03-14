@@ -8,8 +8,7 @@ import moment from "moment";
 function Box({
   groupStore,
   setGroupStore,
-  setNotesList,
-  notesList,
+
   selectedGroup,
 }) {
   const [noteText, setNoteText] = useState("");
@@ -23,97 +22,80 @@ function Box({
     return `${time} `;
   };
   function handleSend() {
-    if (noteText.trim().length > 0) {
-      setNotesList((prev) => {
-        const localNotes = [
-          ...prev,
-          {
-            text: noteText,
-            dateNotes: dateFormat(),
-            timeNotes: timeFormat(),
-            groupId: selectedGroup,
-          }, //Add another parameter that tells me the group ID, ex: groupId: selectedgroup from line 8
-        ];
-
-        localStorage.setItem("notes", JSON.stringify(localNotes));
-        return localNotes;
-      });
-      setNoteText("");
-    }
-
-    const openNote = groupStore.find((group) => group.id === selectedGroup);
     // Finding the group in groupStore with the matching ID
     const updatedGroupStore = groupStore.map((group) => {
       if (group.id === selectedGroup) {
         // If the group matches, update its notesData property
+        group.notesData.push({
+          text: noteText,
+          dateNotes: dateFormat(),
+          timeNotes: timeFormat(),
+        });
         return {
           ...group,
-          notesData: [
-            ...(group.notesData || []),
-            {
-              text: noteText,
-              dateNotes: dateFormat(),
-              timeNotes: timeFormat(),
-            },
-          ],
         };
       }
+      // console.log("I am here");
       return group;
     });
     setGroupStore(updatedGroupStore);
     localStorage.setItem("groupStore", JSON.stringify(groupStore));
-    // const groupNotes = notesList.find((note) => note.groupId === selectedGroup);
-    console.log("Filtered Group: ", groupStore);
-    // console.log("Group Notes: ", groupNotes);
   }
 
   return (
     <div className={styled.container}>
-      {groupStore.map((group, index) => {
-        // I will not do map here...., get the Id which we will select, based on that Id render the component
-        return (
-          <div className={styled.heading} key={index}>
-            <div
-              className={styled.noteImg}
-              style={{ backgroundColor: group.selectedColor }}
-            >
-              <h1>{group.profile}</h1>
-            </div>
-            <div className={styled.noteHead}>
-              <h1>{group.name}</h1>
-            </div>
-          </div>
-        );
-      })}
+      {groupStore
+        .filter((groups) => groups.id === selectedGroup)
+        .map((group, index) => {
 
-      <div className={styled.noteArea}>
-        <div className={styled.notesDisplay}>
-          {notesList.map((note, index) => {
-            return (
-              <div className={styled.notes} key={index}>
-                <p>{note.text}</p>
-                <div className={styled.datentime}>
-                  {note.dateNotes}
-                  &nbsp;
-                  <BsDot size={30} />
-                  &nbsp; {note.timeNotes}
+          return (
+            <div className={styled.wrapper}>
+              <div className={styled.heading} key={index}>
+                <div
+                  className={styled.noteImg}
+                  style={{ backgroundColor: group.selectedColor }}
+                >
+                  <h1>{group.profile}</h1>
+                </div>
+                <div className={styled.noteHead}>
+                  <h1>{group.name}</h1>
                 </div>
               </div>
-            );
-          })}
-        </div>
-        <div className={styled.typeArea}>
-          <textarea
-            name="notesarea"
-            placeholder="Enter your text here..........."
-            value={noteText}
-            onChange={(e) => setNoteText(e.target.value)}
-          ></textarea>
-          <button onClick={handleSend} disabled={!noteText.trim().length}>
-            <IoSend />
-          </button>
-        </div>
-      </div>
+
+              <div className={styled.noteArea}>
+                <div className={styled.notesDisplay}>
+                  {group.notesData.map((note, index) => {
+                    return (
+                      <div className={styled.notes} key={index}>
+                        <p>{note.text}</p>
+                        <div className={styled.datentime}>
+                          {note.dateNotes}
+                          &nbsp;
+                          <BsDot size={30} />
+                          &nbsp; {note.timeNotes}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className={styled.typeArea}>
+                  <textarea
+                    name="notesarea"
+                    placeholder="Enter your text here..........."
+                    value={noteText}
+                    onChange={(e) => setNoteText(e.target.value)}
+                  ></textarea>
+                  <button
+                    onClick={handleSend}
+                    disabled={!noteText.trim().length}
+                  >
+                    <IoSend />
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })}
     </div>
   );
 }

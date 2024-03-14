@@ -14,18 +14,6 @@ function Main() {
 
   const [selectedGroup, setSelectedGroup] = useState(null);
 
-  const [notesList, setNotesList] = useState(
-    JSON.parse(localStorage.getItem("notes")) || []
-  );
-
-  // const handleAddNoteId = (note) => {
-  //   setNotesList((prev) => {
-  //     if(prev.includes(note)) return prev;
-  //     else return [...prev, note];
-  //   })
-// }
-
-
   const generateImg = (name) => {
     const word = name.split(" ");
     //If it is a single word
@@ -38,13 +26,14 @@ function Main() {
   };
 
 
-  // console.log(selectedGroup);
+
   const addData = (groupname) => {
     const groupProfile = {
       ...groupname,
       profile: generateImg(groupname.name),
       id: Date.now(),
       //Make an array with note Objects
+      notesData: []
     };
     
 
@@ -54,19 +43,14 @@ function Main() {
       return localGroup;
     });
 
-    // selectedGroup = groupStore.map((group) =>(group.id))
-    // setNotesList((prev) => {
-    //   return [...prev, { notesId: selectedGroup }];
-    // });
+
     
   
   };
-  console.log("NotesId: ", notesList);
 
   const handlemodal = () => {
     setShowModal(true);
   };
-  // console.log("ID: ", selectedGroup);
   return (
     <main>
       <Mainleft
@@ -79,17 +63,13 @@ function Main() {
         showBox={showBox}
         setShowBox={setShowBox}
         setSelectedGroup={setSelectedGroup}
-        setNotesList={setNotesList}
-
-        // handleAddNoteId={handleAddNoteId}  
+ 
       />
 
       <Mainright
         groupStore={groupStore}
         setGroupStore={setGroupStore}
         showBox={showBox}
-        setNotesList={setNotesList}
-        notesList={notesList}
 
         selectedGroup={selectedGroup}
       />

@@ -30,6 +30,7 @@ function Modal({ modalClose, addData }) {
   });
 
   const handleName = (event) => {
+    console.log(event);
     console.log(event.target.value);
     setGroupname({ ...groupname, name: event.target.value });
   };
