@@ -1,9 +1,15 @@
 import React from "react";
 import Mainleft from "./Mainleft";
 import Mainright from "./Mainright";
-import { useState } from "react";
+import { useMediaQuery } from "@mui/material";
+import Box from "./Box";
+import { useState, useEffect } from "react";
 
 function Main() {
+  const isMobile = useMediaQuery("(max-width:450px)");
+  const [display, setDisplay] = useState("block");
+  const [displayBox, setDisplayBox] = useState("none");
+
   const [showModal, setShowModal] = useState(false);
 
   const [groupStore, setGroupStore] = useState(
@@ -25,27 +31,20 @@ function Main() {
     return firstletter;
   };
 
-
-
   const addData = (groupname) => {
     const groupProfile = {
       ...groupname,
       profile: generateImg(groupname.name),
       id: Date.now(),
       //Make an array with note Objects
-      notesData: []
+      notesData: [],
     };
-    
 
     setGroupStore((prev) => {
       const localGroup = [...prev, groupProfile];
       localStorage.setItem("groupStore", JSON.stringify(localGroup));
       return localGroup;
     });
-
-
-    
-  
   };
 
   const handlemodal = () => {
@@ -53,28 +52,60 @@ function Main() {
   };
   return (
     <main>
-      <Mainleft
-        clickAdd={handlemodal}
-        showModal={showModal}
-        setShowModal={setShowModal}
-        groupStore={groupStore}
-        addData={addData}
+      {isMobile ? (
+        <>
+          <Mainleft
+            clickAdd={handlemodal}
+            showModal={showModal}
+            setShowModal={setShowModal}
+            groupStore={groupStore}
+            setGroupStore={setGroupStore}
+            addData={addData}
+            showBox={showBox}
+            setShowBox={setShowBox}
+            selectedGrouP={selectedGroup}
+            setSelectedGroup={setSelectedGroup}
+            displayBox={displayBox}
+            setDisplayBox={setDisplayBox}
+            display={display}
+            setDisplay={setDisplay}
+          />
 
-        showBox={showBox}
-        setShowBox={setShowBox}
-        setSelectedGroup={setSelectedGroup}
- 
-      />
+          <Box
+            groupStore={groupStore}
+            setGroupStore={setGroupStore}
+            selectedGroup={selectedGroup}
+            displayBox={displayBox}
+            setDisplayBox={setDisplayBox}
+            display={display}
+            setDisplay={setDisplay}
+          />
+        </>
+      ) : (
+        <>
+          <Mainleft
+            clickAdd={handlemodal}
+            showModal={showModal}
+            setShowModal={setShowModal}
+            groupStore={groupStore}
+            setGroupStore={setGroupStore}
+            addData={addData}
+            showBox={showBox}
+            setShowBox={setShowBox}
+            selectedGrouP={selectedGroup}
+            setSelectedGroup={setSelectedGroup}
+          />
 
-      <Mainright
-        groupStore={groupStore}
-        setGroupStore={setGroupStore}
-        showBox={showBox}
-
-        selectedGroup={selectedGroup}
-      />
+          <Mainright
+            groupStore={groupStore}
+            setGroupStore={setGroupStore}
+            showBox={showBox}
+            selectedGroup={selectedGroup}
+          />
+        </>
+      )}
     </main>
   );
-  }
+}
 
 export default Main;

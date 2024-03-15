@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { IoMdAddCircle } from "react-icons/io";
 import styled from "./Mainleft.module.css";
 import Modal from "./Modal";
+import { useMediaQuery } from "@mui/material";
 import Box from "./Box";
 
 function Mainleft({
@@ -12,10 +13,25 @@ function Mainleft({
   addData,
   setSelectedGroup,
   setShowBox,
+  displayBox,
+  setDisplayBox,
+
+  display,
+  setDisplay,
 }) {
+  
+  
+  const isMobile = useMediaQuery("(max-width:450px)");
+  // console.log(isMobile);
+  const handleClick = () => {
+    if (isMobile) {
+      setDisplay("none");
+      setDisplayBox("block")
+    }
+  };
   return (
     <>
-      <div className={styled.container}>
+      <div className={styled.container} style={{ display: display }}>
         {/* HEADING */}
         <div className={styled.header}>
           <h1 className={styled.heading}>Pocket Notes</h1>
@@ -28,7 +44,7 @@ function Mainleft({
                 className={styled.demogroup}
                 key={index}
                 onClick={() => {
-                  setSelectedGroup(group.id), setShowBox(true);
+                  setSelectedGroup(group.id), setShowBox(true), handleClick();
                 }}
               >
                 <div

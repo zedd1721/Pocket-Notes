@@ -17,6 +17,10 @@
   gap: 20px;
 }
 
+.heading .backonMobile {
+  display: none;
+}
+
 .noteImg {
   width: 50px;
   height: 50px;
@@ -126,4 +130,13 @@
   color: #353535;
   font-size: 17px;
   font-weight: 400;
+}
+
+@media (max-width: 450px) {
+  .container {
+    width: 100%;
+  }
+  .heading .backonMobile {
+    display: block;
+  }
 }
